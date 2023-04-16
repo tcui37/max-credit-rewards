@@ -48,9 +48,11 @@ class CardMatrix:
 
 if __name__ == '__main__':
     # maps str category to constant c
-    spending =  {'Fee': -1,  #keep
-                 'Bonus Offer Value': 0,  #keep
-                 'Credit': 1, #keep
+
+    # CHANGE ME
+    spending =  {'Fee': -1,  # % of fees to consider
+                 'Bonus Offer Value': 0,  # % bonus offer consideration
+                 'Credit': 1, # % credit offer to be used (ie 120 uber cash for gold amex)
                  'Flights': 1000, 
                  'Hotels & Car Rentals': 100, 
                  'Other Travel': 600, 
