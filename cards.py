@@ -52,42 +52,69 @@ if __name__ == '__main__':
     # CHANGE ME
     spending =  {'Fee': -1,  # % of fees to consider
                  'Bonus Offer Value': 0,  # % bonus offer consideration
-                 'Credit': 1, # % credit offer to be used (ie 120 uber cash for gold amex)
+                 'Credit': 0.5, # % credit offer to be used (ie 120 uber cash for gold amex)
                  'Flights': 1000, 
-                 'Hotels & Car Rentals': 100, 
-                 'Other Travel': 600, 
-                 'Transit': 30, 
-                 'Restaurants': 3000, 
-                 'Streaming': 40, 
-                 'Online Retail': 400, 
-                 'Groceries': 400*4, 
-                 'Wholesale Clubs': 0, 
-                 'Gas': 300*4, 
-                 'EV Charging': 0, 
-                 'Drugstores': 100, 
-                 'Home Utilities': 200*12, 
+                 'Hotels & Car Rentals': 500, 
+                 'Other Travel': 200, 
+                 'Transit': 40, 
+                 'Restaurants': 500*12, 
+                 'Streaming': 10, 
+                 'Online Retail': 1000, 
+                 'Groceries': 3000, 
+                 'Wholesale Clubs': 300, 
+                 'Gas': 0, 
+                 'EV Charging': 480, 
+                 'Drugstores': 150, 
+                 'Home Utilities': 250*12, 
                  'Cell Phone Provider': 60*12, 
-                 'Rent': 0, 
-                 'All': 300, 
-                 'Choice': 500, 
+                 'Rent': 24000, 
+                 'All': 20000, 
+                 'Choice': 0, 
     }
+
+    # jacky_spending =  {'Fee': -1,  # % of fees to consider
+    #              'Bonus Offer Value': 0,  # % bonus offer consideration
+    #              'Credit': 1, # % credit offer to be used (ie 120 uber cash for gold amex)
+    #              'Flights': 500, 
+    #              'Hotels & Car Rentals': 0, 
+    #              'Other Travel': 100, 
+    #              'Transit': 40, 
+    #              'Restaurants': 1200, 
+    #              'Streaming': 360, 
+    #              'Online Retail': 250, 
+    #              'Groceries': 2400, 
+    #              'Wholesale Clubs': 300, 
+    #              'Gas': 0, 
+    #              'EV Charging': 480, 
+    #              'Drugstores': 100, 
+    #              'Home Utilities': 0, 
+    #              'Cell Phone Provider': 720, 
+    #              'Rent': 24000, 
+    #              'All': 400, 
+    #              'Choice': 0, 
+    # }
+
+
+    
 
 
     A = CardMatrix('credit_cards.csv')
 
-    def max_comboing(card_matrix,k=5):
-        blacklist = set()
+    def max_comboing(card_matrix,spending,blacklist=None,k=5):
+        if blacklist == None:
+            blacklist = set()
         cards = [c for c in A.get_card_indices().keys() if c not in blacklist ]
 
         card_combinations = combinations(cards,k)
 
         max_combo, max_val = 0,0
         for combo in card_combinations:
-            val = A.eval_cards(spending,combo)
+            val = card_matrix.eval_cards(spending,combo)
             if val > max_val:
                 max_combo = combo
                 max_val = val
         return max_combo,max_val
     
-    print(max_comboing(A))
-
+    blacklist = set()
+    combo,val = max_comboing(A,spending,blacklist=blacklist,k=5)
+    print(combo,val)
