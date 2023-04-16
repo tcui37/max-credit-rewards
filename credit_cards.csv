@@ -1,0 +1,26 @@
+Identifier,Full Name,Fee,Bonus Offer Value,Credit,Flights,Hotels & Car Rentals,Other Travel,Transit,Restaurants,Streaming,Online Retail,Groceries,Wholesale Clubs,Gas,EV Charging,Drugstores,Home Utilities,Cell Phone Provider,Rent,All,Choice,Notes
+Options,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+CFU,Chase Freedom Unlimited,0,200,0,0.05,0.05,0,0,0.03,0,0,0,0,0,0,0.03,0,0,0,0.015,0,0
+CFU+,Chase Freedom Unlimited,0,250,0,0.0625,0.0625,0,0,0.0375,0,0,0,0,0,0,0.0375,0,0,0,0.0188,0,1.25x multiplier applied (transfer points to CSP for 1.25x multiplier when redeemed for travel) (can also be 1.5 with CSR)
+CSP,Chase Sapphire Preferred,95,1125,50,0.0625,0.0625,0.025,0.025,0.0375,0.0375,0,0.0375,0,0,0,0,0,0,0,0.0125,0,1.25x multiplier applied (when redeemed for travel in Chase Portal); rental car insurance; trip cancellation/delay insurance; purchase protection; more
+CSR,Chase Sapphire Reserve,550,1350,300,0.075,0.15,0.045,0.045,0.045,0,0,0,0,0,0,0,0,0,0,0.015,0,1.5x multiplier applied (when redeemed for travel in Chase Portal); rental car insurance; trip cancellation/delay insurance; purchase protection; more (all better than CSP)
+ABCE,American Express Blue Cash Everyday,0,200,0,0,0,0,0,0,0,0.03,0.03,0,0.03,0,0,0,0,0,0,0,rental car insurance; Disney+ (net cost becomes $0.99/mo.)
+ABCP,American Express Blue Cash Preferred,95,250,0,0,0,0,0.03,0,0.06,0,0.06,0,0.03,0,0,0,0,0,0,0,rental car insurance
+AG,American Express Gold,250,900,240,0.03,0,0,0,0.04,0,0,0.04,0,0,0,0,0,0,0,0,0,rental car insurance; baggage insurance
+AP,American Express Platinum,695,1500,840,0.05,0.05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,rental car insurance; premium car rental status; trip cancellation/delay insurance; cell phone insurance; Walmart+ membership; more
+BAC,Bank of America Customized Cash Rewards,0,200,0,0,0,0,0,0,0,0,0.02,0.02,0,0,0,0,0,0,0.01,0.03,0
+BAC+,Bank of America Customized Cash Rewards,0,200,0,0,0,0,0,0,0,0,0.025,0.025,0,0,0,0,0,0,0.0125,0.0375,"1.25x multiplier applied (with a Bank of America checking account with $20k+ in it; $50k: 1.5x, $100k: 1.75x)"
+BAU,Bank of America Unlimited Cash Rewards,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.015,0,0
+BAU+,Bank of America Unlimited Cash Rewards,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.0188,0,"1.25x multiplier applied (with a Bank of America checking account with $20k+ in it; $50k: 1.5x, $100k: 1.75x)"
+COSO,Capital One SavorOne,0,200,0,0,0.05,0,0,0.03,0.03,0,0.03,0,0,0,0,0,0,0,0,0,0
+COS,Capital One Savor,95,300,0,0,0.05,0,0,0.04,0.04,0,0.03,0,0,0,0,0,0,0,0,0,0
+COVX,Capital One Venture X,395,750,400,0.05,0.1,0,0,0,0,0,0,0,0,0,0,0,0,0,0.02,0,Priority Pass membership; rental car insurance;  premium car rental status
+CP,Citi Premier,95,750,100,0.03,0.1,0,0,0.03,0,0,0.03,0,0.03,0,0,0,0,0,0,0,0
+CA,Costco Anywhere (Citi),0,0,0,0.03,0.03,0.03,0,0.03,0,0,0,0.02,0.04,0.04,0,0,0,0,0,0,0
+USAG,US Bank Altitude Go,0,200,15,0,0,0,0,0.04,0.02,0,0.02,0,0.02,0.02,0,0,0,0,0,0,0
+USAC,US Bank Altitude Connect,95,500,30,0.04,0.05,0.04,0,0.02,0.02,0,0.02,0,0.04,0.04,0,0,0,0,0,0,0
+USSC,US Bank Shopper Cash,95,250,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.015,0.06,0
+USC,US Bank Cash+,0,200,0,0,0,0,0,0,0,0,0,0.02,0,0,0,0.05,0.05,0,0,0.02,"need to activate categories each quarter (two categories for 5%, one category for 2%, see note in Choice collumn for more info, automatically selected options due to uniqueness)"
+BILT,Bilt,0,0,0,0.02,0.02,0,0,0.03,0,0,0,0,0,0,0,0,0,0.01,0,0,no fee on rent (normally ~3% for credit cards) (need to use the card five times a month in order to earn points); rental car insurance; trip cancellation/delay insurance; purchase protection
+WFAC,Wells Fargo Active Cash,0,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.02,0,cell phone insurance
+WFA,Wells Fargo Autograph,0,200,0,0.03,0.03,0.03,0.03,0.03,0.03,0,0,0,0.03,0.03,0,0,0.03,0,0,0,cell phone insurance
