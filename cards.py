@@ -103,7 +103,7 @@ if __name__ == '__main__':
     # blacklist / whitelist cards
     blacklist = set() # cards to exclude 
     whitelist = [] # cards that must be included 
-    k = 4 # num cards
+    k = 3 # num cards
 
     ###################################
     # CHANGE ME SECTION ENDS
