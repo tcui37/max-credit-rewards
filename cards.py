@@ -42,7 +42,7 @@ class CardMatrix:
 
         indices = [self.card_index[card_id] for card_id in ids ]
         max_categories = self.tensor[indices].max(dim=0,keepdims=False).values.type(torch.float32)
-        
+
         return torch.dot(max_categories,spending_tensor)
     
 
@@ -52,15 +52,15 @@ if __name__ == '__main__':
     # CHANGE ME
     spending =  {'Fee': -1,  # % of fees to consider
                  'Bonus Offer Value': 0,  # % bonus offer consideration
-                 'Credit': 0.5, # % credit offer to be used (ie 120 uber cash for gold amex)
-                 'Flights': 1000, 
-                 'Hotels & Car Rentals': 500, 
+                 'Credit': 1, # % credit offer to be used (ie 120 uber cash for gold amex)
+                 'Flights': 1200, 
+                 'Hotels & Car Rentals': 300, 
                  'Other Travel': 200, 
                  'Transit': 40, 
-                 'Restaurants': 500*12, 
-                 'Streaming': 10, 
+                 'Restaurants': 400*12, 
+                 'Streaming': 30, 
                  'Online Retail': 1000, 
-                 'Groceries': 3000, 
+                 'Groceries': 400*12, 
                  'Wholesale Clubs': 300, 
                  'Gas': 0, 
                  'EV Charging': 480, 
@@ -68,53 +68,39 @@ if __name__ == '__main__':
                  'Home Utilities': 250*12, 
                  'Cell Phone Provider': 60*12, 
                  'Rent': 24000, 
-                 'All': 20000, 
+                 'All': 2000, 
                  'Choice': 0, 
     }
-
-    # jacky_spending =  {'Fee': -1,  # % of fees to consider
-    #              'Bonus Offer Value': 0,  # % bonus offer consideration
-    #              'Credit': 1, # % credit offer to be used (ie 120 uber cash for gold amex)
-    #              'Flights': 500, 
-    #              'Hotels & Car Rentals': 0, 
-    #              'Other Travel': 100, 
-    #              'Transit': 40, 
-    #              'Restaurants': 1200, 
-    #              'Streaming': 360, 
-    #              'Online Retail': 250, 
-    #              'Groceries': 2400, 
-    #              'Wholesale Clubs': 300, 
-    #              'Gas': 0, 
-    #              'EV Charging': 480, 
-    #              'Drugstores': 100, 
-    #              'Home Utilities': 0, 
-    #              'Cell Phone Provider': 720, 
-    #              'Rent': 24000, 
-    #              'All': 400, 
-    #              'Choice': 0, 
-    # }
-
 
     
 
 
     A = CardMatrix('credit_cards.csv')
 
-    def max_comboing(card_matrix,spending,blacklist=None,k=5):
+    def max_comboing(card_matrix,spending,whitelist=None,blacklist=None,k=5):
         if blacklist == None:
             blacklist = set()
-        cards = [c for c in A.get_card_indices().keys() if c not in blacklist ]
+        if whitelist == None:
+            whitelist = []
 
+        #reductions
+        cards = [c for c in list(A.get_card_indices().keys())  if c not in blacklist ]
         card_combinations = combinations(cards,k)
+        card_combinations_filtered = [c for c in card_combinations if all([ x in c for x in whitelist ]) ]
 
         max_combo, max_val = 0,0
-        for combo in card_combinations:
+        for combo in card_combinations_filtered:
             val = card_matrix.eval_cards(spending,combo)
             if val > max_val:
                 max_combo = combo
                 max_val = val
         return max_combo,max_val
     
-    blacklist = set()
-    combo,val = max_comboing(A,spending,blacklist=blacklist,k=5)
+    # blacklist / whitelist cards
+    blacklist = set(['AP',"COVX"])
+    whitelist = []
+
+    combo,val = max_comboing(A,spending,whitelist=whitelist,blacklist=blacklist,k=4)
     print(combo,val)
+
+
