@@ -110,7 +110,7 @@ if __name__ == '__main__':
     ####################################
 
 
-    combo,val = max_comboing(A,spending,whitelist=whitelist,blacklist=blacklist,k)
+    combo,val = max_comboing(A,spending,whitelist=whitelist,blacklist=blacklist,k=k)
     total = sum(spending.values())
 
     print('card combo: ',combo)
