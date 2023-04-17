@@ -49,28 +49,7 @@ class CardMatrix:
 if __name__ == '__main__':
     # maps str category to constant c
 
-    # CHANGE ME
-    spending =  {'Fee': -1,  # % of fees to consider
-                 'Bonus Offer Value': 0,  # % bonus offer consideration
-                 'Credit': 1, # % credit offer to be used (ie 120 uber cash for gold amex)
-                 'Flights': 1200, 
-                 'Hotels & Car Rentals': 300, 
-                 'Other Travel': 200, 
-                 'Transit': 40, 
-                 'Restaurants': 400*12, 
-                 'Streaming': 30, 
-                 'Online Retail': 1000, 
-                 'Groceries': 400*12, 
-                 'Wholesale Clubs': 300, 
-                 'Gas': 0, 
-                 'EV Charging': 480, 
-                 'Drugstores': 150, 
-                 'Home Utilities': 250*12, 
-                 'Cell Phone Provider': 60*12, 
-                 'Rent': 24000, 
-                 'All': 2000, 
-                 'Choice': 0, 
-    }
+
 
     
 
@@ -96,11 +75,46 @@ if __name__ == '__main__':
                 max_val = val
         return max_combo,max_val
     
+    ###################################
+    # CHANGE ME SECTION BEGINS
+    ####################################
+
+    spending =  {'Fee': -1,  # % of fees to consider
+                 'Bonus Offer Value': 0,  # % bonus offer consideration
+                 'Credit': .5, # % credit offer to be used (ie 120 uber cash for gold amex)
+                 'Flights': 1200, 
+                 'Hotels & Car Rentals': 300, 
+                 'Other Travel': 200, 
+                 'Transit': 40, 
+                 'Restaurants': 400*12, 
+                 'Streaming': 30, 
+                 'Online Retail': 1000, 
+                 'Groceries': 400*12, 
+                 'Wholesale Clubs': 300, 
+                 'Gas': 0, 
+                 'EV Charging': 480, 
+                 'Drugstores': 150, 
+                 'Home Utilities': 250*12, 
+                 'Cell Phone Provider': 60*12, 
+                 'Rent': 24000, 
+                 'All': 2000, 
+                 'Choice': 0, 
+    }
     # blacklist / whitelist cards
-    blacklist = set(['AP',"COVX"])
-    whitelist = []
+    blacklist = set() # cards to exclude 
+    whitelist = [] # cards that must be included 
+    k = 4 # num cards
 
-    combo,val = max_comboing(A,spending,whitelist=whitelist,blacklist=blacklist,k=4)
-    print(combo,val)
+    ###################################
+    # CHANGE ME SECTION ENDS
+    ####################################
 
+
+    combo,val = max_comboing(A,spending,whitelist=whitelist,blacklist=blacklist,k)
+    total = sum(spending.values())
+
+    print('card combo: ',combo)
+    print('spent: ', total)
+    print('rewards: ',val)
+    print(f'% back: {val/total*100}%')
 
