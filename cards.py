@@ -24,6 +24,19 @@ class CardMatrix:
         self.index2category = self.data[0,2:].T
 
 
+        # Manual edits to self.tensor
+
+        # spread 'all' reward across all empty values
+        for card_row in self.tensor[:,2:]:
+            card_row[card_row == 0 ] = card_row[-2]
+
+        # manualy edit tensor to be -.03 across all rent except for BILT (couldnt figure out how to parallelize this ;-;)
+        bilt_index = self.card2index['BILT']
+        for row in range(self.tensor.size()[0]):
+            if row != bilt_index:
+                self.tensor[row,17] = self.tensor[row,17]  - 0.03
+
+
 
     def __repr__(self) -> str:
         rep = ''
@@ -47,15 +60,11 @@ class CardMatrix:
         #
         submatrix = self.tensor[indices]
 
-        # replace all 0 values with 'all'
-        for card_row in submatrix:
-            card_row[card_row == 0 ] = card_row[-2]
-
         # sum fees, sum credits, select maximal credit across cards
         fees = submatrix[:,0].sum(dim=0,keepdims=True)
         credits = submatrix[:,1].sum(dim=0,keepdims=True)
-        max_categories = submatrix[:,2:].max(dim=0,keepdims=False)
-        max_categories_rewards = max_categories.values.type(torch.float32)
+        max_categories = submatrix.max(dim=0,keepdims=False)
+        max_categories_rewards = max_categories.values.type(torch.float32)[2:]
 
         # dot product calculation
         net_rewards = torch.dot(torch.concat((fees,credits,max_categories_rewards),dim=-1),spending_tensor)
@@ -114,7 +123,7 @@ if __name__ == '__main__':
 
     spending =  {'Fee': -1,  # % of fees to consider
                  'Bonus Offer Value': 0,  # % bonus offer consideration
-                 'Credit': .5, # % credit offer to be used (ie 120 uber cash for gold amex)
+                 'Credit': 0.5, # % credit offer to be used (ie 120 uber cash for gold amex)
                  'Flights': 1200, 
                  'Hotels & Car Rentals': 300, 
                  'Other Travel': 200, 
@@ -135,7 +144,7 @@ if __name__ == '__main__':
     }
 
     # blacklist / whitelist cards
-    blacklist = set() # cards to exclude 
+    blacklist = set(['CFU+']) # cards to exclude 
     whitelist = [] # cards that must be included 
     k = 5 # num cards
 
@@ -154,4 +163,3 @@ if __name__ == '__main__':
     print('rewards: ',val)
     print(f'% back: {val/total*100}%')
     print(f'categories to spend on: {choices}')
-    # A.test()
