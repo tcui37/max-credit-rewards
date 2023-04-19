@@ -44,13 +44,21 @@ class CardMatrix:
             spending_tensor[self.category2index[category]] = float(spent)
 
         indices = [self.card2index[card_id] for card_id in ids ]
-        # 
-        # 
-        max_categories = self.tensor[indices].max(dim=0,keepdims=False)
+        #
+        submatrix = self.tensor[indices]
 
+        # replace all 0 values with 'all'
+        for card_row in submatrix:
+            card_row[card_row == 0 ] = card_row[-2]
+
+        # sum fees, sum credits, select maximal credit across cards
+        fees = submatrix[:,0].sum(dim=0,keepdims=True)
+        credits = submatrix[:,1].sum(dim=0,keepdims=True)
+        max_categories = submatrix[:,2:].max(dim=0,keepdims=False)
         max_categories_rewards = max_categories.values.type(torch.float32)
 
-        net_rewards = torch.dot(max_categories_rewards,spending_tensor)
+        # dot product calculation
+        net_rewards = torch.dot(torch.concat((fees,credits,max_categories_rewards),dim=-1),spending_tensor)
 
         # generate how to spend categories
         max_categories_card_indices = max_categories.indices
@@ -121,7 +129,7 @@ if __name__ == '__main__':
                  'Drugstores': 150, 
                  'Home Utilities': 250*12, 
                  'Cell Phone Provider': 60*12, 
-                 'Rent': 24000000, 
+                 'Rent': 24000, 
                  'All': 2000, 
                  'Choice': 0, 
     }
