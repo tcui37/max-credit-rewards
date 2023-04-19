@@ -18,8 +18,11 @@ class CardMatrix:
 
         # create indexing for indexing into tensor
         m,n = self.data.shape
-        self.card_index = {self.data[i][0]:i-2 for i in range(2,m)}
-        self.category_index = {self.data[0][i]:i-2 for i in range(2,n-1)}
+        self.card2index = {self.data[i][0]:i-2 for i in range(2,m)} 
+        self.index2card = self.data[2:,0].T
+        self.category2index = {self.data[0][i]:i-2 for i in range(2,n-1)}
+        self.index2category = self.data[0,2:].T
+
 
 
     def __repr__(self) -> str:
@@ -30,29 +33,50 @@ class CardMatrix:
     
     def get_tensor(self): return self.tensor
     
-    def get_card_indices(self): return self.card_index
+    def get_card_indices(self): return self.card2index
 
-    def get_category_indices(self): return self.category_index
+    def get_category_indices(self): return self.category2index
 
     def eval_cards(self,spendings:dict,ids: list) -> float:
-        m = len(self.category_index)
+        m = len(self.category2index)
         spending_tensor = torch.zeros(m,dtype=torch.float32)
         for category,spent in spendings.items():
-            spending_tensor[self.category_index[category]] = float(spent)
+            spending_tensor[self.category2index[category]] = float(spent)
 
-        indices = [self.card_index[card_id] for card_id in ids ]
-        max_categories = self.tensor[indices].max(dim=0,keepdims=False).values.type(torch.float32)
+        indices = [self.card2index[card_id] for card_id in ids ]
+        # 
+        # 
+        max_categories = self.tensor[indices].max(dim=0,keepdims=False)
 
-        return torch.dot(max_categories,spending_tensor)
+        max_categories_rewards = max_categories.values.type(torch.float32)
+
+        net_rewards = torch.dot(max_categories_rewards,spending_tensor)
+
+        # generate how to spend categories
+        max_categories_card_indices = max_categories.indices
+        how_to_spend = {}
+        for i in range(len(max_categories_card_indices)):
+            category = self.index2category[i]
+            j = max_categories_card_indices[i] # j = 1,...,k
+            card_i = indices[j]
+            card = self.index2card[card_i]
+            how_to_spend[category] = card
+
+        
+        return  {
+            'value': net_rewards,
+            'choices': how_to_spend
+        }
+    
+    def test(self):
+        a = self.tensor
+        a = a.max(dim=0)
+        print(a)
+        
     
 
 if __name__ == '__main__':
     # maps str category to constant c
-
-
-
-    
-
 
     A = CardMatrix('credit_cards.csv')
 
@@ -62,18 +86,19 @@ if __name__ == '__main__':
         if whitelist == None:
             whitelist = []
 
-        #reductions
         cards = [c for c in list(A.get_card_indices().keys())  if c not in blacklist ]
         card_combinations = combinations(cards,k)
         card_combinations_filtered = [c for c in card_combinations if all([ x in c for x in whitelist ]) ]
 
-        max_combo, max_val = 0,0
+        best_combo, best_results, max_val = None,0,0
         for combo in card_combinations_filtered:
-            val = card_matrix.eval_cards(spending,combo)
+            results = card_matrix.eval_cards(spending,combo)
+            val = results['value']
             if val > max_val:
-                max_combo = combo
-                max_val = val
-        return max_combo,max_val
+                best_combo = combo
+                best_results = results
+                max_val = val 
+        return best_combo,best_results
     
     ###################################
     # CHANGE ME SECTION BEGINS
@@ -96,25 +121,29 @@ if __name__ == '__main__':
                  'Drugstores': 150, 
                  'Home Utilities': 250*12, 
                  'Cell Phone Provider': 60*12, 
-                 'Rent': 24000, 
+                 'Rent': 24000000, 
                  'All': 2000, 
                  'Choice': 0, 
     }
+
     # blacklist / whitelist cards
     blacklist = set() # cards to exclude 
     whitelist = [] # cards that must be included 
-    k = 3 # num cards
+    k = 5 # num cards
 
     ###################################
     # CHANGE ME SECTION ENDS
     ####################################
 
 
-    combo,val = max_comboing(A,spending,whitelist=whitelist,blacklist=blacklist,k=k)
+    combo,results = max_comboing(A,spending,whitelist=whitelist,blacklist=blacklist,k=k)
+    val = results['value']
+    choices = results['choices']
     total = sum(spending.values())
 
     print('card combo: ',combo)
     print('spent: ', total)
     print('rewards: ',val)
     print(f'% back: {val/total*100}%')
-
+    print(f'categories to spend on: {choices}')
+    # A.test()
