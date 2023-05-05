@@ -3,6 +3,7 @@ import torch
 import pandas as pd
 import numpy as np
 from itertools import combinations
+from tqdm import tqdm
 
 
 class CardMatrix:
@@ -107,7 +108,7 @@ if __name__ == "__main__":
         ]
 
         best_combo, best_results, max_val = None, 0, 0
-        for combo in card_combinations_filtered:
+        for combo in tqdm(card_combinations_filtered):
             results = card_matrix.eval_cards(spending, combo)
             val = results["value"]
             if val > max_val:
