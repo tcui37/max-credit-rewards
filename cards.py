@@ -26,8 +26,11 @@ class CardMatrix:
         # Manual edits to self.tensor
 
         # spread 'all' reward across all empty values
-        for card_row in self.tensor[:, 2:]:
-            card_row[card_row == 0] = card_row[-2]
+        for i in range(self.tensor.size()[0]):
+            card_row = self.tensor[i]
+            all_val = card_row[-2]
+            card_row = torch.where(card_row <= 0.001, all_val, card_row)
+            self.tensor[i] = card_row
 
         # manualy edit tensor to be -.03 across all rent except for BILT (couldnt figure out how to parallelize this ;-;)
         bilt_index = self.card2index["BILT"]
@@ -147,7 +150,7 @@ if __name__ == "__main__":
     # blacklist / whitelist cards
     blacklist = set(["CFU+"])  # cards to exclude
     whitelist = []  # cards that must be included
-    k = 5  # num cards
+    k = 6  # num cards
 
     ###################################
     # CHANGE ME SECTION ENDS
@@ -158,6 +161,8 @@ if __name__ == "__main__":
     )
     val = results["value"]
     choices = results["choices"]
+    unwanted_keys = ["Fee", "Bonus Offer Value", "Credit"]
+    [choices.pop(key) for key in unwanted_keys]
     total = sum(spending.values())
 
     print("card combo: ", combo)
@@ -165,3 +170,5 @@ if __name__ == "__main__":
     print("rewards: ", val)
     print(f"% back: {val/total*100}%")
     print(f"categories to spend on: {choices}")
+
+    # print(A.get_tensor())
